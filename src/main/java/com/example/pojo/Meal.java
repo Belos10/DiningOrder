@@ -9,12 +9,10 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * 菜品管理
- * @TableName Meal
- */
+
 @TableName(value = "meal")
 @Data
 public class Meal implements Serializable {
@@ -30,7 +28,7 @@ public class Meal implements Serializable {
     //图片
     private String pic;
     //上架时间
-    private LocalDateTime mealTime;
+    private LocalDate mealTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

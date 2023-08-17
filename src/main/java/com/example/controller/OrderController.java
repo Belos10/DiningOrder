@@ -2,7 +2,7 @@ package com.example.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.common.R;
-import com.example.dto.OrderDto;
+import com.example.dto.MealDto;
 import com.example.pojo.Meal;
 import com.example.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,21 +29,21 @@ public class OrderController
 
     //查看购物车 可填写
     @PostMapping("/shopping")
-    public R<OrderDto> Shopping(@RequestBody OrderDto orderDto) throws Exception{
-        float price = orderService.getPriceDto(orderDto);
-        orderDto.setPrice(price);
-        return R.success(orderDto);
+    public R<MealDto> Shopping(@RequestBody MealDto mealDto) throws Exception{
+        float price = orderService.getPriceDto(mealDto);
+        mealDto.setPrice(price);
+        return R.success(mealDto);
     }
 
     //用户下单 生成Order
     @PostMapping("/submit")
-    public R<String> submit(@RequestBody OrderDto orderDto, String remark) throws Exception
+    public R<String> submit(@RequestBody MealDto mealDto, @RequestHeader("remark") String remark) throws Exception
     {
-        float price = orderService.getPriceDto(orderDto);
+        float price = orderService.getPriceDto(mealDto);
         LocalDateTime time = LocalDateTime.now();
         String key = time + "_" + price;
 //        log.info("订单数据：{}",orders);
-        orderService.submit(orderDto, key, remark, time);
+        orderService.submit(mealDto, key, remark, time);
         return R.success("下单成功");
     }
 

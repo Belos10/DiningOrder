@@ -11,10 +11,7 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 
-/**
- * 订单
- * @TableName order
- */
+
 @TableName(value ="order_detail")
 @Data
 public class Order implements Serializable {
@@ -30,6 +27,8 @@ public class Order implements Serializable {
     private LocalDateTime orderTime;
 
     private String remark;
+
+    private Integer num;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

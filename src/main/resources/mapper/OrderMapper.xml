@@ -21,4 +21,31 @@
     </select>
 
 
+
+    <select id="getKeyandmealList" resultType="Map">
+        select distinct(`key`) as keyList, group_concat(meal_id) as mealIdList, group_concat(num) as numList, order_time, remark
+        from `order` where meal_id in (select meal_id from meal where meal_time = ${localDate})
+        GROUP BY `key`,order_time, remark order by order_time desc
+        limit ${page},${pageSize}
+    </select>
+
+    <!--    <select id="getKeyandmealList" resultType="map">-->
+<!--        SELECT *-->
+<!--        FROM `order`-->
+<!--        WHERE `key` IN (-->
+<!--            SELECT `key`-->
+<!--            FROM `order`-->
+<!--            GROUP BY `key`-->
+<!--            HAVING COUNT(*) > 1) limit ${page},${pageSize}-->
+<!--    </select>-->
+
+<!--    <select id="getOrderPage" resultType="com.example.pojo.Meal">-->
+<!--        select * from order-->
+<!--        order by meal_time desc limit ${page},${pageSize}-->
+<!--    </select>-->
+
+<!--    <select id="getOrderPageCount" resultType="java.lang.Integer">-->
+<!--        select count(meal_id) from meal-->
+<!--    </select>-->
+
 </mapper>
