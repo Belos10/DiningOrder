@@ -8,9 +8,13 @@
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="cost" column="cost" jdbcType="FLOAT"/>
         <result property="intro" column="intro" jdbcType="VARCHAR"/>
-        <result property="pic" column="pic" jdbcType="BLOB"/>
+        <result property="pic" column="pic" jdbcType="LONGVARCHAR"/>
         <result property="mealTime" column="meal_time" jdbcType="TIME"/>
     </resultMap>
 
+    <insert id="addMeal" parameterType="com.example.pojo.Meal">
+        insert into meal(name, cost, intro, pic, meal_time)
+        values (#{name}, #{cost}, #{intro}, #{pic}, #{mealTime})
+    </insert>
 
 </mapper>

@@ -12,5 +12,9 @@
         <result property="mealTime" column="meal_time" jdbcType="TIME"/>
     </resultMap>
 
+    <insert id="addMeal" parameterType="com.example.pojo.Meal">
+        insert into meal(name, cost, intro, pic, meal_time)
+        values (#{name}, #{cost}, #{intro}, #{pic}, #{mealTime})
+    </insert>
 
 </mapper>

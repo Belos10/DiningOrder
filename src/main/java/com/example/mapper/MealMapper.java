@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface MealMapper extends BaseMapper<Meal> {
-
+    void addMeal(Meal meal);
 }

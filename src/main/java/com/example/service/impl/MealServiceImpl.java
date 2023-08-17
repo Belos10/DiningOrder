@@ -17,7 +17,7 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal>
 
     @Override
     public void addMeal(Meal meal){
-        mealMapper.insert(meal);
+        mealMapper.addMeal(meal);
     }
 
     @Override

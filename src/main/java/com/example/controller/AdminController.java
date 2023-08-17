@@ -29,18 +29,20 @@ public class AdminController {
 
 
     //菜品编辑
-    @PostMapping
+    @PostMapping("/addMeal")
     public R<String> addDish(@RequestBody Meal meal){
         mealService.addMeal(meal);
         return R.success("新增成功");
     }
 
-    @DeleteMapping
+    //删除菜品
+    @DeleteMapping("/deleteMeal")
     public R<String> deleteDish(@RequestBody Meal meal){
         mealService.delMeal(meal);
         return R.success("修改成功");
     }
 
+    //编辑菜品
     @PutMapping
     public R<String> editDish(@RequestBody Meal meal){
         mealService.editMeal(meal);
