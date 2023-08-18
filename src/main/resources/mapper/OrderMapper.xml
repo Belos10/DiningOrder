@@ -24,7 +24,7 @@
 
     <select id="getKeyandmealList" resultType="Map">
         select distinct(`key`) as keyList, group_concat(meal_id) as mealIdList, group_concat(num) as numList, order_time, remark
-        from `order` where meal_id in (select meal_id from meal where meal_time = ${localDate})
+        from `order` where meal_id in (select meal_id from meal where meal_time = '${localDate}')
         GROUP BY `key`,order_time, remark order by order_time desc
         limit ${page},${pageSize}
     </select>

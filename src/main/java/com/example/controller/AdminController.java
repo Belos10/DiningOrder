@@ -7,10 +7,17 @@ import com.example.pojo.Meal;
 import com.example.pojo.Order;
 import com.example.service.MealService;
 import com.example.service.OrderService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.annotation.Resource;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 @RestController
@@ -51,7 +58,9 @@ public class AdminController {
 
     //查看订单 可选时间
     @GetMapping("/orderMenu")
-    public R<Page<OrderDto>> getOrderPage(int page, int pageSize, LocalDate time){
+    public R<Page<OrderDto>> getOrderPage(int page, int pageSize,
+                                          @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate time){
         return R.success(orderService.getOrderPage((page-1)*pageSize, pageSize, time));
     }
+
 }
