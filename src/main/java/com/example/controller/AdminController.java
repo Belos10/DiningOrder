@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -23,7 +28,9 @@ import java.time.LocalDate;
 @RestController
 @Slf4j
 @RequestMapping("/admin")
-public class AdminController {
+//@CrossOrigin(origins = "http://localhost:8080", maxAge=3600)
+public class AdminController
+{
     @Resource
     private MealService mealService;
     @Resource
@@ -37,7 +44,7 @@ public class AdminController {
 
     //菜品编辑
     @PostMapping("/addMeal")
-    public R<String> addDish(@RequestBody Meal meal){
+    public R<String> addDish(@RequestBody Meal meal, HttpServletResponse response){
         mealService.addMeal(meal);
         return R.success("新增成功");
     }

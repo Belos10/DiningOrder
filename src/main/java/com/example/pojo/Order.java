@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 
 
-@TableName(value ="order_detail")
+@TableName(value ="order")
 @Data
 public class Order implements Serializable {
 

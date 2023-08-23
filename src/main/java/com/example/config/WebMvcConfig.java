@@ -14,17 +14,17 @@ import java.util.List;
 @Slf4j
 public class WebMvcConfig extends WebMvcConfigurationSupport
 {
-    /**
-     * 该类为了扫描 resources-backend 和 front的静态资源映射
-     * 并且原有的static访问路径失效
-     * @param registry
-     */
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry)
-    {
-        registry.addResourceHandler("/backend/**").addResourceLocations("classpath:/backend/");
-        registry.addResourceHandler("/front/**").addResourceLocations("classpath:/front/");
-    }
+//    /**
+//     * 该类为了扫描 resources-backend 和 front的静态资源映射
+//     * 并且原有的static访问路径失效
+//     * @param registry
+//     */
+//    @Override
+//    protected void addResourceHandlers(ResourceHandlerRegistry registry)
+//    {
+//        registry.addResourceHandler("/backend/**").addResourceLocations("classpath:/backend/");
+//        registry.addResourceHandler("/front/**").addResourceLocations("classpath:/front/");
+//    }
 
     /**
      * 扩展消息转换器 与common.JacksonObjectMapper一起使用
