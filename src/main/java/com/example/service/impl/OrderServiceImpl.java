@@ -2,6 +2,7 @@ package com.example.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.dto.MealDto;
 import com.example.dto.OrderDto;
 import com.example.dto.OrderRemarkDto;
 import com.example.mapper.MealMapper;
@@ -85,11 +86,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
             String remark = (String) map.get("remark");
             List<String> mealIdList = Arrays.asList(((String)map.get("mealIdList")).split(","));
             List<String> numList = Arrays.asList(((String)map.get("numList")).split(","));
-            List<Object> mealList = new ArrayList<>();
+            List<MealDto> mealList = new ArrayList<>();
             for(int i = 0; i < mealIdList.size(); i++){
-                Meal meal = mealMapper.selectById(mealIdList.get(i));
-                mealList.set(0, meal);
-                mealList.set(1, Integer.valueOf(numList.get(i)));
+                MealDto mealDto = new MealDto(mealMapper.selectById(mealIdList.get(i)), Integer.parseInt(numList.get(i)));
+//                Meal meal = mealMapper.selectById(mealIdList.get(i));
+//                mealList.set(0, meal);
+//                mealList.set(1, Integer.valueOf(numList.get(i)));
+                mealList.add(mealDto);
             }
             OrderDto orderDto = new OrderDto(mealList);
             orderDto.setOrderKey(key);

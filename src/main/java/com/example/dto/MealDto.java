@@ -15,6 +15,12 @@ import java.util.Map;
 //}
 @Data
 public class MealDto {
-    Map<Integer, Integer> mealMap = new HashMap<>();
-    float price = 0;
+    private Meal meal;
+    private int num;
+
+    public MealDto(Meal meal, int num)
+    {
+        this.meal = meal;
+        this.num = num;
+    }
 }
