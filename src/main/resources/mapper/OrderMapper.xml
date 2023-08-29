@@ -6,27 +6,30 @@
     <resultMap id="BaseResultMap" type="com.example.pojo.Order">
         <id property="orderId" column="order_id" jdbcType="BIGINT"/>
         <result property="mealId" column="meal_id" jdbcType="BIGINT"/>
-        <result property="orderTime" column="order_time" jdbcType="TIME"/>
+        <result property="orderTime" column="order_time" jdbcType="TIMESTAMP"/>
         <result property="remark" column="remark" jdbcType="VARCHAR"/>
-        <result property="key" column="key" jdbcType="VARCHAR"/>
+        <result property="orderKey" column="key" jdbcType="VARCHAR"/>
+        <result property="num" column="num" jdbcType="INTEGER"/>
+        <result property="orderName" column="order_name" jdbcType="VARCHAR"/>
+        <result property="orderPhone" column="order_phone" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getMealPage" resultType="com.example.pojo.Meal">
-        select * from meal
-        order by meal_time desc limit ${page},${pageSize}
+        select * from meal where meal_time = '${localDate}'
+        order by meal_time desc limit ${page}, ${pageSize}
     </select>
 
     <select id="getMealPageCount" resultType="java.lang.Integer">
-        select count(meal_id) from meal
+        select count(meal_id) from meal where meal_time = '${localDate}'
     </select>
 
 
 
     <select id="getKeyandmealList" resultType="Map">
-        select distinct(`key`) as keyList, group_concat(meal_id) as mealIdList, group_concat(num) as numList, order_time, remark
-        from `order` where meal_id in (select meal_id from meal where meal_time = '${localDate}')
-        GROUP BY `key`,order_time, remark order by order_time desc
-        limit #{page},#{pageSize}
+        select distinct(order_key) as keyList, group_concat(meal_id) as mealIdList, group_concat(num) as numList, order_time, remark
+        from orderlist where meal_id in (select meal_id from meal where meal_time = '${localDate}')
+        GROUP BY order_key, order_time, remark order by order_time desc
+        limit #{page}, #{pageSize}
     </select>
 
     <!--    <select id="getKeyandmealList" resultType="map">-->

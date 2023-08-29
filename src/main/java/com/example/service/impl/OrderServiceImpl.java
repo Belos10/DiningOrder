@@ -2,9 +2,8 @@ package com.example.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.common.LocalTimeConvert;
-import com.example.dto.MealDto;
 import com.example.dto.OrderDto;
+import com.example.dto.OrderRemarkDto;
 import com.example.mapper.MealMapper;
 import com.example.mapper.OrderMapper;
 import com.example.pojo.Meal;
@@ -14,9 +13,8 @@ import lombok.var;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -32,42 +30,46 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
 
     @Override
-    public Page<Meal> getMealPage(int page, int pageSize)
+    public Page<Meal> getMealPage(int page, int pageSize, LocalDate localDate)
     {
         Page<Meal> pageInfo = new Page<>(page, pageSize);
-        List<Meal> records =  orderMapper.getMealPage(page, pageSize);
+        List<Meal> records =  orderMapper.getMealPage(page, pageSize, localDate);
         pageInfo.setRecords(records);
-        pageInfo.setTotal(orderMapper.getMealPageCount());
+        pageInfo.setTotal(orderMapper.getMealPageCount(localDate));
         return pageInfo;
     }
 
-    @Override
-    public float getPriceDto(MealDto mealDto)
-    {
-        Map<Meal, Integer> map = mealDto.getMealMap();
-        float sum = (float) 0;
-        if(map.isEmpty())
-            return sum;
-        for(Meal meal:map.keySet()){
-            int num = map.get(meal);
-            float cost = meal.getCost();
-            sum += num * cost;
-        }
-        return sum;
-    }
+//    @Override
+//    public float getPriceDto(MealDto mealDto)
+//    {
+//        Map<Meal, Integer> map = mealDto.getMealMap();
+//        float sum = (float) 0;
+//        if(map.isEmpty())
+//            return sum;
+//        for(Meal meal:map.keySet()){
+//            int num = map.get(meal);
+//            float cost = meal.getCost();
+//            sum += num * cost;
+//        }
+//        return sum;
+//    }
 
     @Override
-    public void submit(MealDto mealDto, String key, String remark, LocalDateTime time){
-        for(Meal meal: mealDto.getMealMap().keySet()){
+    public void submit(List<List<BigInteger>> idNumMap, String key, OrderRemarkDto orderRemarkDto, LocalDateTime time){
+        String orderName = orderRemarkDto.getOrderName();
+        String orderPhone = orderRemarkDto.getOrderPhone();
+        String remark = orderRemarkDto.getRemark();
+        for(List<BigInteger> list:idNumMap){
             Order order = new Order();
             order.setOrderTime(time);
-            order.setKey(key);
-            order.setMealId(meal.getMealId());
-            order.setNum(mealDto.getMealMap().get(meal));
+            order.setOrderKey(key);
+            order.setMealId(list.get(0));
+            order.setNum(list.get(1).intValue());
             order.setRemark(remark);
-            orderMapper.insert(order);
+            order.setOrderName(orderName);
+            order.setOrderPhone(orderPhone);
+            save(order);
         }
-
     }
 
 
@@ -83,13 +85,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
             String remark = (String) map.get("remark");
             List<String> mealIdList = Arrays.asList(((String)map.get("mealIdList")).split(","));
             List<String> numList = Arrays.asList(((String)map.get("numList")).split(","));
-            Map<Meal, Integer> mealList = new HashMap<>();
+            List<Object> mealList = new ArrayList<>();
             for(int i = 0; i < mealIdList.size(); i++){
                 Meal meal = mealMapper.selectById(mealIdList.get(i));
-                mealList.put(meal, Integer.valueOf(numList.get(i)));
+                mealList.set(0, meal);
+                mealList.set(1, Integer.valueOf(numList.get(i)));
             }
             OrderDto orderDto = new OrderDto(mealList);
-            orderDto.setKey(key);
+            orderDto.setOrderKey(key);
             orderDto.setRemark(remark);
             orderDto.setOrderTime(orderTime);
             records.add(orderDto);

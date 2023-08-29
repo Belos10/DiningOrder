@@ -13,8 +13,8 @@ import java.util.Map;
 @Mapper
 public interface OrderMapper extends BaseMapper<Order>
 {
-    List<Meal> getMealPage(int page, int pageSize);
-    int getMealPageCount();
+    List<Meal> getMealPage(int page, int pageSize, LocalDate localDate);
+    int getMealPageCount(LocalDate localDate);
     List<Map> getKeyandmealList(int page, int pageSize, LocalDate localDate);
 
 //    List<Order> getOrderPage(int page, int pageSize);

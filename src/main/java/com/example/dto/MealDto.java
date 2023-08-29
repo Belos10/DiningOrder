@@ -15,6 +15,6 @@ import java.util.Map;
 //}
 @Data
 public class MealDto {
-    Map<Meal, Integer> mealMap = new HashMap<>();
+    Map<Integer, Integer> mealMap = new HashMap<>();
     float price = 0;
 }

@@ -19,18 +19,18 @@ public class Order implements Serializable {
 
     @TableId
     private BigInteger orderId;
-
     private BigInteger mealId;
 
     //订单标识
-    private String key;
+    private String orderKey;
     //点单时间
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime orderTime;
 
     private String remark;
-
     private Integer num;
+    private String orderName;
+    private String orderPhone;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

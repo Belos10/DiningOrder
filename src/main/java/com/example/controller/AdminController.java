@@ -24,11 +24,13 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 @Slf4j
 @RequestMapping("/admin")
-//@CrossOrigin(origins = "http://localhost:8080", maxAge=3600)
+@CrossOrigin(origins = "http://localhost:8080", maxAge=3600)
 public class AdminController
 {
     @Resource
@@ -37,8 +39,11 @@ public class AdminController
     private OrderService orderService;
 
     @GetMapping("/mealMenu")
-    public R<Page<Meal>> getMealPage(int page, int pageSize){
-        return R.success(orderService.getMealPage((page-1)*pageSize, pageSize));
+    public R<Page<Meal>> getMealPage(int page, int pageSize, String time){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
+        LocalDate date = dateTime.toLocalDate();
+        return R.success(orderService.getMealPage((page-1)*pageSize, pageSize, date));
     }
 
 
@@ -65,9 +70,10 @@ public class AdminController
 
     //查看订单 可选时间
     @GetMapping("/orderMenu")
-    public R<Page<OrderDto>> getOrderPage(int page, int pageSize,
-                                          @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate time){
-        return R.success(orderService.getOrderPage((page-1)*pageSize, pageSize, time));
+    public R<Page<OrderDto>> getOrderPage(int page, int pageSize, String time){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
+        LocalDate date = dateTime.toLocalDate();
+        return R.success(orderService.getOrderPage((page-1)*pageSize, pageSize, date));
     }
-
 }

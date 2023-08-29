@@ -1,25 +1,14 @@
 package com.example.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.common.R;
 import com.example.common.ThreadLocalUtil;
 import com.example.pojo.User;
 import com.example.service.UserService;
-import com.example.utils.RedisUtils;
-import com.example.utils.ValidateCodeUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.Map;
 
 //登录界面
 @RequestMapping("/user")
@@ -33,13 +22,11 @@ public class UserController
 
     //登录管理员账户
     @PostMapping("/login")
-    public R<User> loginApi(@RequestBody User user, HttpSession session, HttpServletResponse response)
-    {
+    public R<User> loginApi(@RequestBody User user,
+                            HttpSession session) {
         R<User> r = userService.loginService(user);
-//        response.setHeader("Access-Control-Allow-Origin", "*");
-        if (r.getCode() == 0) {
+        if (r.getCode() == 0)
             return r;
-        }
         session.setAttribute("loginUser", r.getData().getId());
         return r;
     }
@@ -57,7 +44,8 @@ public class UserController
 
     //修改密码
     @PostMapping("/changepwd")
-    public R<String> changePassword(@RequestBody User user, @RequestHeader("newPwd") String newPwd){
+    public R<String> changePassword(@RequestBody User user,
+                                    @RequestHeader("newPwd") String newPwd){
         return userService.editUser(user, newPwd);
     }
 }
