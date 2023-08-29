@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.dto.MealDto;
 import com.example.pojo.Meal;
 import com.example.pojo.Order;
 import org.apache.ibatis.annotations.MapKey;
@@ -16,7 +17,7 @@ public interface OrderMapper extends BaseMapper<Order>
     List<Meal> getMealPage(int page, int pageSize, LocalDate localDate);
     int getMealPageCount(LocalDate localDate);
     List<Map> getKeyandmealList(int page, int pageSize, LocalDate localDate);
-
+    List<MealDto> getOrderMenuNum(int page, int pageSize, LocalDate localDate);
 //    List<Order> getOrderPage(int page, int pageSize);
 //    int getOrderPageCount();
 

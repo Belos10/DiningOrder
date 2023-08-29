@@ -11,12 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 public class OrderDto extends Order {
     private List<MealDto> mealList;
-
-
     public OrderDto(List<MealDto> mealList)
     {
         this.mealList = mealList;

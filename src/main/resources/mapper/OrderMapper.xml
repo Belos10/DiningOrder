@@ -32,6 +32,14 @@
         limit #{page}, #{pageSize}
     </select>
 
+    <select id="getOrderMenuNum" resultType="com.example.dto.MealDto">
+        select m.*, sum(o.num) as num from dining.orderlist o, dining.meal m
+        where o.meal_id=m.meal_id and
+              m.meal_id in (select meal_id from dining.meal where meal_time = '${localDate}')
+        group by o.meal_id order by o.meal_id
+        limit #{page}, #{pageSize}
+    </select>
+
     <!--    <select id="getKeyandmealList" resultType="map">-->
 <!--        SELECT *-->
 <!--        FROM `order`-->

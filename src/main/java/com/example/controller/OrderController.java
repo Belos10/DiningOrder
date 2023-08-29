@@ -46,7 +46,7 @@ public class OrderController
     @PostMapping("/submit")
     public R<String> submit(@RequestBody List<List<BigInteger>> idNumMap,
                             @RequestHeader("OrderRemarkDto")OrderRemarkDto orderRemarkDto,
-                            @RequestHeader("price") float price) throws Exception
+                            @RequestHeader("price") float price)
     {
 //        String remark1 = URLDecoder.decode(remark, "UTF-8");
         LocalDateTime time = LocalDateTime.now().withNano(0);

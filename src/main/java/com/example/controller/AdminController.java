@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.common.R;
+import com.example.dto.MealDto;
 import com.example.dto.OrderDto;
 import com.example.pojo.Meal;
 import com.example.pojo.Order;
@@ -46,7 +47,6 @@ public class AdminController
         return R.success(orderService.getMealPage((page-1)*pageSize, pageSize, date));
     }
 
-
     //菜品编辑
     @PostMapping("/addMeal")
     public R<String> addDish(@RequestBody Meal meal, HttpServletResponse response){
@@ -76,4 +76,14 @@ public class AdminController
         LocalDate date = dateTime.toLocalDate();
         return R.success(orderService.getOrderPage((page-1)*pageSize, pageSize, date));
     }
+
+    //返回某天订单的所有菜品与数量
+    @GetMapping("/OrderMenuNum")
+    public R<Page<MealDto>> getOrderMenuNum(int page, int pageSize, String time){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
+        LocalDate date = dateTime.toLocalDate();
+        return R.success(orderService.getOrderMenuNum((page-1)*pageSize, pageSize, date));
+    }
+
 }

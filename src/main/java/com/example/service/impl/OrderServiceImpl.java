@@ -104,4 +104,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
         pageInfo.setTotal(mapList.size());
         return pageInfo;
     }
+
+    @Override
+    public Page<MealDto> getOrderMenuNum(int page, int pageSize, LocalDate localDate)
+    {
+        Page<MealDto> pageInfo = new Page<>(page, pageSize);
+        List<MealDto> orderMenuNum = orderMapper.getOrderMenuNum(page, pageSize, localDate);
+        pageInfo.setRecords(orderMenuNum);
+        return pageInfo;
+    }
 }
