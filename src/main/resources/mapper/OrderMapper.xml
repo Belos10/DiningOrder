@@ -8,7 +8,7 @@
         <result property="mealId" column="meal_id" jdbcType="BIGINT"/>
         <result property="orderTime" column="order_time" jdbcType="TIMESTAMP"/>
         <result property="remark" column="remark" jdbcType="VARCHAR"/>
-        <result property="orderKey" column="key" jdbcType="VARCHAR"/>
+        <result property="orderKey" column="order_key" jdbcType="VARCHAR"/>
         <result property="num" column="num" jdbcType="INTEGER"/>
         <result property="orderName" column="order_name" jdbcType="VARCHAR"/>
         <result property="orderPhone" column="order_phone" jdbcType="VARCHAR"/>

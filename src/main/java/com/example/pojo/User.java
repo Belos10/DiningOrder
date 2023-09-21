@@ -1,5 +1,6 @@
 package com.example.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -16,7 +17,7 @@ import java.math.BigInteger;
 @Data
 public class User implements Serializable {
     //id
-    @TableId
+    @TableId(type = IdType.AUTO)
     private BigInteger id;
     //账户
     private String account;

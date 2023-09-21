@@ -1,0 +1,6 @@
+bestpay:
+  user-certificate-name: bestpay.p12
+  service-certificate-name: bestpay.cer
+  passwd: 24054008
+  alias: conname
+  key-store-type: PKCS12

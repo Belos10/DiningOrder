@@ -1,5 +1,6 @@
 package com.example.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -13,11 +14,11 @@ import java.time.LocalDateTime;
 
 
 
-@TableName(value ="order")
+@TableName(value ="orderlist")
 @Data
 public class Order implements Serializable {
 
-    @TableId
+    @TableId(type = IdType.AUTO)
     private BigInteger orderId;
     private BigInteger mealId;
 
