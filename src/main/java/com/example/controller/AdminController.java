@@ -9,6 +9,8 @@ import com.example.pojo.Order;
 import com.example.service.MealService;
 import com.example.service.OrderService;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,6 +34,7 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @RequestMapping("/admin")
 @CrossOrigin(origins = "http://localhost:8080", maxAge=3600)
+@Api("管理员权限")
 public class AdminController
 {
     @Resource
@@ -39,6 +42,7 @@ public class AdminController
     @Resource
     private OrderService orderService;
 
+    @ApiOperation("获取菜品分页")
     @GetMapping("/mealMenu")
     public R<Page<Meal>> getMealPage(int page, int pageSize, String time){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -48,6 +52,7 @@ public class AdminController
     }
 
     //菜品编辑
+    @ApiOperation("增加菜品")
     @PostMapping("/addMeal")
     public R<String> addDish(@RequestBody Meal meal, HttpServletResponse response){
         mealService.addMeal(meal);
@@ -55,6 +60,7 @@ public class AdminController
     }
 
     //删除菜品
+    @ApiOperation("删除菜品")
     @DeleteMapping("/deleteMeal")
     public R<String> deleteDish(@RequestBody Meal meal){
         mealService.delMeal(meal);
@@ -62,6 +68,7 @@ public class AdminController
     }
 
     //编辑菜品
+    @ApiOperation("编辑菜品")
     @PutMapping
     public R<String> editDish(@RequestBody Meal meal){
         mealService.editMeal(meal);
@@ -69,6 +76,7 @@ public class AdminController
     }
 
     //查看订单 可选时间
+    @ApiOperation("查看订单 可选时间")
     @GetMapping("/orderMenu")
     public R<Page<OrderDto>> getOrderPage(int page, int pageSize, String time){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -78,6 +86,7 @@ public class AdminController
     }
 
     //返回某天订单的所有菜品与数量
+    @ApiOperation("返回某天订单的所有菜品与数量")
     @GetMapping("/OrderMenuNum")
     public R<Page<MealDto>> getOrderMenuNum(int page, int pageSize, String time){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");

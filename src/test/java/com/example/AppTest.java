@@ -7,6 +7,7 @@ import com.example.mapper.MealMapper;
 import com.example.mapper.OrderMapper;
 import com.example.pojo.Meal;
 import com.example.service.MealService;
+import com.example.service.OrderService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,26 +33,19 @@ public class AppTest
      */
     @Autowired
     private OrderMapper orderMapper;
-
     @Resource
     private MealService mealService;
-
     @Resource
     private MealMapper mealMapper;
+    @Resource
+    private OrderService orderService;
 
 
 
-    @Test
-    public void shouldAnswerWithTrue()
-    {
-        assertTrue( true );
-    }
 
     @Test
     public void test1(){
-        Meal meal = new Meal();
-        meal.setName("sdqwds");
-        mealMapper.addMeal(meal);
-//        mealService.addMeal(meal);
+        orderService.bestPayOrder("", "","",
+                "","");
     }
 }

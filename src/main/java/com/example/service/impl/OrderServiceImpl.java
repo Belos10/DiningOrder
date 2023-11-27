@@ -2,6 +2,14 @@ package com.example.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bestpay.api.BestpayClient;
+import com.bestpay.api.DefaultBestpayClient;
+import com.bestpay.api.common.EnvEnum;
+import com.bestpay.api.exception.BestpayApiException;
+import com.bestpay.api.model.request.BestpayRequest;
+import com.bestpay.api.model.response.BestpayResponse;
+import com.bestpay.api.util.BestpayLogger;
+import com.example.config.PayConfig;
 import com.example.dto.MealDto;
 import com.example.dto.OrderDto;
 import com.example.dto.OrderRemarkDto;
@@ -10,8 +18,10 @@ import com.example.mapper.OrderMapper;
 import com.example.pojo.Meal;
 import com.example.pojo.Order;
 import com.example.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigInteger;
@@ -22,12 +32,15 @@ import java.time.ZoneId;
 import java.util.*;
 
 @Service
+@Slf4j
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
         implements OrderService {
     @Resource
     private OrderMapper orderMapper;
     @Resource
     private MealMapper mealMapper;
+//    @Resource
+//    private BestpayClient bestpayClient;
 
 
     @Override
@@ -55,6 +68,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 //        return sum;
 //    }
 
+    @Transactional
     @Override
     public void submit(List<List<BigInteger>> idNumMap, String key, OrderRemarkDto orderRemarkDto, LocalDateTime time){
         String orderName = orderRemarkDto.getOrderName();
@@ -69,7 +83,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
             order.setRemark(remark);
             order.setOrderName(orderName);
             order.setOrderPhone(orderPhone);
-            save(order);
+            try {
+                log.info("===============订单===============");
+                bestPayOrder("",
+                        "", "", "", "");
+                save(order);
+            }catch (Exception e){
+                System.out.println(e);
+            }
+
         }
     }
 
@@ -112,5 +134,86 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
         List<MealDto> orderMenuNum = orderMapper.getOrderMenuNum(page, pageSize, localDate);
         pageInfo.setRecords(orderMenuNum);
         return pageInfo;
+    }
+
+
+    @Transactional
+    @Override
+    public void bestPayOrder(String userCertificateName, String serviceCertificateName, String passwd, String alias, String keyStoreType)
+    {
+        userCertificateName = "bestpay.p12";
+        serviceCertificateName = "bestpay.cer";
+        passwd = "24054008";
+        alias = "conname";
+        keyStoreType = "PKCS12";
+
+        log.info("调用翼支付接口");
+
+        DefaultBestpayClient defaultBestpayClient = new DefaultBestpayClient
+                (userCertificateName, serviceCertificateName, passwd, alias, keyStoreType);
+        BestpayRequest request = new BestpayRequest();
+        request.setEnvEnum(EnvEnum.TEST);
+        request.setCommonParams("{\n" +
+                "\t\"institutionType\":\"MERCHANT\",\n" +
+                "\t\"institutionCode\":\"3178033925245778\"\n" +
+                "}");
+        request.setPath("/order/submit");
+        request.setVersion("1.0.3");
+        request.setBizContent("{\n" +
+                "\t\"accessCode\": \"CASHIER\",\n" +
+                "\t\"ccy\": \"156\",\n" +
+                "\t\"goodsInfo\": \"Mi6\",\n" +
+                "\t\"mediumType\": \"WIRELESS\",\n" +
+                "\t\"merchantNo\": \"3178033925245778\",\n" +
+                "\t\"notifyUrl\": \"/order/submit\",\n" +
+                "\t\"operator\": \"3178033925245778\",\n" +
+                "\t\"outTradeNo\": \"510519611214111149687\",\n" +
+                "\t\"requestDate\": \"2018-10-15 08:09:15\",\n" +
+                "\t\"subject\": \"subject\",\n" +
+                "\t\"tradeAmt\": \"99\",\n" +
+                "\t\"tradeChannel\": \"APP\"\n" +
+                "\t\"timeOut\": \"120\"\n" +
+                "}");
+
+//        request.setCommonParams("{\n" +
+//                "\t\"institutionType\":\"MERCHANT\",\n" +
+//                "\t\"institutionCode\":\"商户号\"\n" +
+//                "}");
+//        request.setPath("/order/submit");
+//        request.setVersion("1.0.3");
+//        request.setBizContent("{\n" +
+//                "\t\"accessCode\": \"CASHIER\",\n" +
+//                "\t\"ccy\": \"156\",\n" +
+//                "\t\"goodsInfo\": \"交易包含的商品信息\",\n" +
+//                "\t\"mediumType\": \"WIRELESS\",\n" +
+//                "\t\"merchantNo\": \"商户号\",\n" +
+//                "\t\"notifyUrl\": \"异步通知地址\",\n" +
+//                "\t\"operator\": \"同商户号\",\n" +
+//                "\t\"outTradeNo\": \"订单号\",\n" +
+//                "\t\"requestDate\": \"订单时间\",\n" +
+//                "\t\"storeCode\": \"商户配置渠道号/门店号\",\n" +
+//                "\t\"storeName\": \"？？？\",\n" +
+//                "\t\"subject\": \"订单信息，在用户账单中展示\",\n" +
+//                "\t\"tradeAmt\": \"订单金额，单位分\",\n" +
+//                "\t\"tradeChannel\": \"H5\"\n" +
+//                "}");
+
+        try {
+            BestpayResponse response = defaultBestpayClient.execute(request);
+
+            if (response.isSuccess()) {
+                System.out.println("成功处理......response:"+response);
+                System.out.println("成功处理......getResult:"+response.getResult());
+                BestpayLogger.logBizError("成功处理......response:"+response);
+                BestpayLogger.logBizError("成功处理......getResult:"+response.getResult());
+            } else {
+                System.out.println("失败处理......errorCode:"+response.getErrorCode()+
+                        " errorMsg:"+ response.getErrorMsg());
+                BestpayLogger.logBizError("失败处理......errorCode:"+response.getErrorCode()+
+                        " errorMsg:"+ response.getErrorMsg());
+            }
+        } catch (BestpayApiException e) {
+            BestpayLogger.logBizError("异常处理......errorCode:"+e.getErrCode()+" errorMsg:"+e.getErrMsg());
+        }
     }
 }
