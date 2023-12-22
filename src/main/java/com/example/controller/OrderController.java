@@ -27,7 +27,7 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequestMapping("/order")
-@Api("点餐界面")
+@Api(tags = "用户点餐界面")
 public class OrderController
 {
 
@@ -36,7 +36,7 @@ public class OrderController
 
     //获取菜品信息
     @GetMapping("/page")
-    @ApiOperation("获取菜品信息")
+    @ApiOperation(value = "获取菜品信息")
     public R<Page<Meal>> getMealPage(int page, int pageSize, String time){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
@@ -55,7 +55,7 @@ public class OrderController
     //用户下单 生成Order
     // idNumMap [[0,1],[0,1]] 0号位为mealId 1号位为数量
     @PostMapping("/submit")
-    @ApiOperation("用户下单")
+    @ApiOperation(value = "用户下单")
     public R<String> submit(@RequestBody List<List<BigInteger>> idNumMap,
                             @RequestHeader("OrderRemarkDto")OrderRemarkDto orderRemarkDto,
                             @RequestHeader("price") float price)
@@ -63,34 +63,10 @@ public class OrderController
 //        String remark1 = URLDecoder.decode(remark, "UTF-8");
         LocalDateTime time = LocalDateTime.now().withNano(0);
         String key = time + "_" + price;
-        log.info("TEST===============下单");
-        OrderRemarkDto orderRemarkDto1 = new OrderRemarkDto("aa1",
-                "123456", "ab1");
-        orderService.submit(idNumMap, key, orderRemarkDto1, time);
+//        log.info("TEST===============下单");
+//        OrderRemarkDto orderRemarkDto1 = new OrderRemarkDto("aa1",
+//                "123456", "ab1");
+        orderService.submit(idNumMap, key, orderRemarkDto, time);
         return R.success("下单成功");
     }
-
-//    @PostMapping("/notify")
-//    public R<String> tradeNotify(@RequestParam Map<String, String> map){
-//        log.info("翼支付通知参数=============" + map);
-//        //验签
-//        //
-//        SignatureUtil.verify(Signature)
-//
-//
-//        public static boolean verify(RsaCipher.SignHashAlgoMode algorithm, byte[] data, byte[] sign, PublicKey publicKey) {
-//            if (data == null || sign == null || publicKey == null) {
-//                return false;
-//            }
-//            try {
-//                Signature signature = Signature.getInstance(algorithm.getCode(), getInstanceProvider());
-//                signature.initVerify(publicKey);
-//                signature.update(data);
-//                return signature.verify(sign);
-//            } catch (Exception e) {
-//                return false;
-//            }
-//        }
-//    }
-
 }

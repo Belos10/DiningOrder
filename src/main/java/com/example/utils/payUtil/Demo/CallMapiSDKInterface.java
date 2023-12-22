@@ -1,4 +1,4 @@
-package com.example.utils;
+package com.example.utils.payUtil.Demo;
 
 import com.alibaba.fastjson.JSON;
 import com.example.utils.payUtil.*;
@@ -27,10 +27,10 @@ public class CallMapiSDKInterface {
             "\t\"goodsInfo\": \"Mi6\",\n" +
             "\t\"mediumType\": \"WIRELESS\",\n" +
             "\t\"merchantNo\": \"3178033925245778\",\n" +
-            "\t\"notifyUrl\": \"www.baidu.com\",\n" +
+            "\t\"notifyUrl\": \"https://f41c-117-40-199-249.ngrok-free.app/pay/getNo\",\n" +
             "\t\"operator\": \"3178002069171199\",\n" +
             "\t\"outTradeNo\": \"51051961121411114968722\",\n" +
-            "\t\"requestDate\": \"2021-09-10 16:07:15\",\n" +
+            "\t\"requestDate\": \"2023-12-18 15:59:15\",\n" +
             "\t\"storeCode\": \"xiaomiStore001\",\n" +
             "\t\"storeName\": \"xiaomiStore\",\n" +
             "\t\"subject\": \"subject\",\n" +

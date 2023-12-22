@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/user")
 @Slf4j
 @RestController
-@Api("登录")
+@Api(tags = "登录、修改密码")
 //@CrossOrigin(maxAge=3600)
 public class UserController
 {
@@ -25,7 +25,7 @@ public class UserController
 
     //登录管理员账户
     @PostMapping("/login")
-    @ApiOperation("登录管理员账户")
+    @ApiOperation(value = "登录管理员账户")
     public R<User> loginApi(@RequestBody User user,
                             HttpSession session) {
         R<User> r = userService.loginService(user);
@@ -40,7 +40,7 @@ public class UserController
 
     //登出
     @ApiOperation("登出")
-    @PostMapping("/loginout")
+    @PostMapping(value = "/loginout")
     public R<String> logout(HttpSession session){
         session.removeAttribute("loginUser");
         ThreadLocalUtil.remove();
@@ -49,7 +49,7 @@ public class UserController
 
     //修改密码
     @PostMapping("/changepwd")
-    @ApiOperation("修改密码")
+    @ApiOperation(value = "修改密码")
     public R<String> changePassword(@RequestBody User user,
                                     @RequestHeader("newPwd") String newPwd){
         return userService.editUser(user, newPwd);

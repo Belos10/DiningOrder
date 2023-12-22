@@ -2,14 +2,12 @@ package com.example.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bestpay.api.BestpayClient;
 import com.bestpay.api.DefaultBestpayClient;
 import com.bestpay.api.common.EnvEnum;
 import com.bestpay.api.exception.BestpayApiException;
 import com.bestpay.api.model.request.BestpayRequest;
 import com.bestpay.api.model.response.BestpayResponse;
 import com.bestpay.api.util.BestpayLogger;
-import com.example.config.PayConfig;
 import com.example.dto.MealDto;
 import com.example.dto.OrderDto;
 import com.example.dto.OrderRemarkDto;
@@ -29,7 +27,10 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -83,11 +84,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
             order.setRemark(remark);
             order.setOrderName(orderName);
             order.setOrderPhone(orderPhone);
+//            save(order);
             try {
                 log.info("===============订单===============");
                 bestPayOrder("",
                         "", "", "", "");
-                save(order);
+//                save(order);
             }catch (Exception e){
                 System.out.println(e);
             }
@@ -146,6 +148,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
         passwd = "24054008";
         alias = "conname";
         keyStoreType = "PKCS12";
+        String institutionCode = "3178033925245778";
+        String institutionType = "MERCHANT";
 
         log.info("调用翼支付接口");
 
@@ -167,12 +171,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
                 "\t\"merchantNo\": \"3178033925245778\",\n" +
                 "\t\"notifyUrl\": \"/order/submit\",\n" +
                 "\t\"operator\": \"3178033925245778\",\n" +
-                "\t\"outTradeNo\": \"510519611214111149687\",\n" +
-                "\t\"requestDate\": \"2018-10-15 08:09:15\",\n" +
+                "\t\"outTradeNo\": \"51028217115687\",\n" +
+                "\t\"requestDate\": \"2023-12-07 09:10:15\",\n" +
                 "\t\"subject\": \"subject\",\n" +
                 "\t\"tradeAmt\": \"99\",\n" +
-                "\t\"tradeChannel\": \"APP\"\n" +
-                "\t\"timeOut\": \"120\"\n" +
+                "\t\"tradeChannel\": \"H5\"\n" +
+                "\t\"timeOut\": \"1200\"\n" +
                 "}");
 
 //        request.setCommonParams("{\n" +

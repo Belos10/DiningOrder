@@ -38,7 +38,8 @@ public class LoginCheckFilter implements Filter{
                 "/front/**",
                 "/common/**",
                 "/user/login",
-                "/order/**"
+                "/order/**",
+                "/**"
         };
 
 

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.models.auth.In;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -32,6 +33,11 @@ public class Order implements Serializable {
     private Integer num;
     private String orderName;
     private String orderPhone;
+    /* 0：新建未付款
+    * 1：已付款
+    * 2：已撤销
+    * 3：已退款     */
+    private Integer orderStatus;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

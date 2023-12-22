@@ -34,7 +34,7 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @RequestMapping("/admin")
 @CrossOrigin(origins = "http://localhost:8080", maxAge=3600)
-@Api("管理员权限")
+@Api(tags = "管理员权限界面")
 public class AdminController
 {
     @Resource

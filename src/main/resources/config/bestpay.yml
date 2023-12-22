@@ -1,6 +1,81 @@
-bestpay:
+bpay:
+  # 商户私钥证书
+  # ？
   user-certificate-name: bestpay.p12
+  # 公钥证书
+  # ？
   service-certificate-name: bestpay.cer
+  # 私钥证书密码
+  # ？
   passwd: 24054008
+  # 证书别名(密钥标识)
+  # ？
   alias: conname
+  # 固定
   key-store-type: PKCS12
+  common-params:
+    institution-type: MERCHANT
+    #表示加签使用的CA证书对应的商户号
+    #如果交易商户为父商户，可不填
+    #如果交易商户为子商户，可不填或填父商户号（一般用于父商户代理子商户发起交易的情况）
+    #?
+    institution-code: 3178033925245778
+  com-path: /uniformReceipt/proCreateOrder
+  version: 1.0.3
+  biz-content:
+    # merchantNo	String(32)	Y	交易商户号
+    #?
+    merchant-no: 3178033925245778
+    # operator	String(32)	Y	操作员编号，同merchantNo参数
+    #?
+    operator: 3178033925245778
+    # notifyUrl	String(256)	Y	支付结果异步通知地址
+    # 注意：每次重新启动ngrok，都需要根据实际情况修改这个配置
+    #?
+    notify-url: https://f41c-117-40-199-249.ngrok-free.app/pay/getNo
+
+
+
+
+    #################################
+    # accessCode	String(16)	Y	固定传CASHIER
+    access-code: CASHIER
+    # ccy	String(3)	Y	币种，固定传156
+    ccy: 156
+    # mediumType	String(32)	Y	APP支付/手机网站支付/电脑网站支付传WIRELESS
+    medium-type: WIRELESS
+    # tradeChannel	String(16)	Y	APP支付传APP
+    #  手机网站支付传H5
+    #  电脑网站支付/网银支付传WEB
+    #  网银支付传CORPERATE
+    trade-channel: H5
+
+
+
+
+
+
+
+  #  riskControlInfo	String数组	Y	风控参数，详见附录“风控参数说明”
+  
+#  outTradeNo	String(32)	Y	商户订单号，商户内部需保证唯一
+#  tradeAmt	String(16)	Y	订单金额，单位分
+#  requestDate	String(17)	Y	订单请求时间，格式"yyyy-MM-dd HH:mm:ss"，如“2018-01-24 16:20:14”
+#  subject	String(128)	Y	订单信息，在用户账单中展示
+#  goodsInfo	String(256)	Y	交易订单包含的商品信息，仅记录用
+
+
+#  ledgerAccount	String数组	N	分账参数，详见附录“分账参数说明”
+#  goodsDetails	String数组	N	商品详情，详见附录“商品详情说明”
+#  availablePayTools	String数组	N	指定当前订单允许用户使用的支付工具，详见附录“可用支付工具”。
+#  逗号拼接的字符串。当需要支持多个支付工具时用“,”分隔。
+#  timeOut	Long(10)	N	订单超时时间，可设置范围为范围是0到86400，单位为秒，默认为1800秒，订单超时后不可支付。
+#  storeCode	String(32)	N	商户使用前需在商服平台配置过，用于区分商户内部渠道
+#  线上商户：渠道号
+#  线下商户：门店号
+#  memo	String(256)	N	备注信息，内容由商户自定义，可在商服平台的“交易管理-交易查询-交易详情”页面查看，也会在查询接口与支付回调接口返回
+
+
+
+
+
