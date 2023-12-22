@@ -136,6 +136,16 @@
       <artifactId>springfox-swagger-ui</artifactId>
       <version>2.9.2</version>
     </dependency>
+
+    <!--
+    支付接口引入
+    https://gitee.com/thlws/payment-thl
+    -->
+    <dependency>
+      <groupId>org.thlws</groupId>
+      <artifactId>payment-thl</artifactId>
+      <version>1.2.0</version>
+    </dependency>
   </dependencies>
 
   <build>
