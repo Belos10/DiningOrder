@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.models.auth.In;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

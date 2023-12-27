@@ -18,8 +18,6 @@ public interface OrderMapper extends BaseMapper<Order>
     int getMealPageCount(LocalDate localDate);
     List<Map> getKeyandmealList(int page, int pageSize, LocalDate localDate);
     List<MealDto> getOrderMenuNum(int page, int pageSize, LocalDate localDate);
-//    List<Order> getOrderPage(int page, int pageSize);
-//    int getOrderPageCount();
-
-//    void addOrder(String key, BigInteger mealId, String remark, LocalDateTime time);
+    List<Order> getOrderByKey(String key);
+    int updateStatusByKey(String key, int status);
 }

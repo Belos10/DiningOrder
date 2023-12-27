@@ -13,6 +13,9 @@
         <result property="orderName" column="order_name" jdbcType="VARCHAR"/>
         <result property="orderPhone" column="order_phone" jdbcType="VARCHAR"/>
     </resultMap>
+    <update id="updateStatusByKey">
+        update orderlist set order_status = #{status} where order_key = #{key}
+    </update>
 
     <select id="getMealPage" resultType="com.example.pojo.Meal">
         select * from meal where meal_time = '${localDate}'
@@ -39,24 +42,9 @@
         group by o.meal_id order by o.meal_id
         limit #{page}, #{pageSize}
     </select>
+    <select id="getOrderByKey" resultType="com.example.pojo.Order">
+        select * from orderlist where order_key = #{key}
+    </select>
 
-    <!--    <select id="getKeyandmealList" resultType="map">-->
-<!--        SELECT *-->
-<!--        FROM `order`-->
-<!--        WHERE `key` IN (-->
-<!--            SELECT `key`-->
-<!--            FROM `order`-->
-<!--            GROUP BY `key`-->
-<!--            HAVING COUNT(*) > 1) limit ${page},${pageSize}-->
-<!--    </select>-->
-
-<!--    <select id="getOrderPage" resultType="com.example.pojo.Meal">-->
-<!--        select * from order-->
-<!--        order by meal_time desc limit ${page},${pageSize}-->
-<!--    </select>-->
-
-<!--    <select id="getOrderPageCount" resultType="java.lang.Integer">-->
-<!--        select count(meal_id) from meal-->
-<!--    </select>-->
 
 </mapper>

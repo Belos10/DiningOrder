@@ -62,10 +62,10 @@ public class OrderController
     {
 //        String remark1 = URLDecoder.decode(remark, "UTF-8");
         LocalDateTime time = LocalDateTime.now().withNano(0);
-        String key = time + "_" + price;
-//        log.info("TEST===============下单");
-//        OrderRemarkDto orderRemarkDto1 = new OrderRemarkDto("aa1",
-//                "123456", "ab1");
+        String t = time.toString().replaceAll("-", "").replaceAll(":", "");
+        String phone = orderRemarkDto.getOrderPhone();
+        phone = phone.substring(phone.length()-4);
+        String key = t + "_" + (int)price + "_" + phone;
         orderService.submit(idNumMap, key, orderRemarkDto, time);
         return R.success("下单成功");
     }

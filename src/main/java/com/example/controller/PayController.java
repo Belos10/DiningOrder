@@ -12,6 +12,7 @@ import com.example.config.BizContentConfig;
 import com.example.config.CommonParamsConfig;
 import com.example.config.PayClientConfig;
 import com.example.dto.PayCreateDto;
+import com.example.mapper.OrderMapper;
 import com.example.pojo.Order;
 import com.example.service.OrderService;
 import com.example.utils.payUtil.*;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.List;
 import java.util.Map;
 
 @Api(tags = "支付相关")
@@ -46,11 +48,14 @@ public class PayController
     private BestpayClient bestpayClient;
     @Resource
     private OrderService orderService;
+    @Resource
+    private OrderMapper orderMapper;
 
     //下单
     @ApiOperation(value = "调用支付接口下单")
     @PostMapping(value = "/create")
     // 传商品数量、商品信息、订单号、下单时间、订单信息、订单金额
+    // 传入的订单号为 key值，需要自行转换为pay_id
     public String tradeCreate(@RequestBody PayCreateDto payCreateDto, HttpServletRequest httpServletRequest){
         //调用统一下单接口
         BestpayRequest request = new BestpayRequest();
@@ -84,6 +89,8 @@ public class PayController
         // goodsInfo 商品信息
         bizContent.put("goodsInfo", payCreateDto.getGoodsInfo());
         // outTradeNo 商户订单号
+        // 传入的订单号为 key值，需要自行转换为pay_id
+
         bizContent.put("outTradeNo", payCreateDto.getOutTradeNo());
         // requestDate 下单时间
         bizContent.put("requestDate", payCreateDto.getRequestDate());
@@ -151,20 +158,30 @@ public class PayController
 
             // 订单号
             String outTradeNo = params.get("outTradeNo").toString();
-            Order order = orderService.getById(outTradeNo);
-            if(order == null){
+            List<Order> order = orderMapper.getOrderByKey(outTradeNo);
+            if(order.isEmpty()){
                 log.error("订单不存在");
                 return ;
             }
-
             log.info("支付成功异步通知验签成功！");
+
+            // 订单支付成功 更新数据库订单状态
+            if (params.get("tradeStatus").equals("SUCCESS")) {
+                int upNum = orderMapper.updateStatusByKey(outTradeNo, 1);
+                if(upNum > 0)
+                    log.info("更新数据库订单表状态成功");
+                else
+                    log.error("更新数据库订单表状态失败，没有检测到需更新的数据");
+
+            }
+
         }catch (BestpayApiException e) {
             log.error("exception message", e);
         }
     }
 
     private static final String SIGN_PARAM_NAME = "sign";
-    public static final String CHARACTER_CODE = "UTF-8";
+    private static final String CHARACTER_CODE = "UTF-8";
 
 
     private String sign(Map<String, Object> dataMap) {
